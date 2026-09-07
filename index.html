@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gemini Auto Image Saver</title>
+  <meta name="description" content="A local Chrome and Edge extension that automatically saves newly generated Gemini images with sequential filenames. Nothing is uploaded." />
+  <link rel="icon" href="assets/icon128.png" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="wrap nav">
+    <a class="brand" href="index.html">
+      <img src="assets/icon128.png" alt="" />
+      Gemini Auto Image Saver
+    </a>
+    <nav class="nav-links">
+      <a href="#how">How it works</a>
+      <a href="privacy.html">Privacy</a>
+      <a class="btn" href="#install">Get the extension</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="wrap hero">
+      <div>
+        <p class="kicker">Local Chrome / Edge extension</p>
+        <h1>Save Gemini images as they appear. In order. On your PC.</h1>
+        <p class="lede">
+          Built for scene-by-scene YouTube work. When Gemini finishes a generated image,
+          the extension downloads the best available version into a numbered project folder.
+          Prompts and images never leave your computer.
+        </p>
+        <div class="hero-actions">
+          <a class="btn" href="#install">Install instructions</a>
+          <a class="btn ghost" href="privacy.html">Read the privacy policy</a>
+        </div>
+        <p class="hero-note">Chrome Web Store listing can be linked here after Google approves the extension.</p>
+      </div>
+
+      <aside class="popup-card" aria-label="Extension popup preview">
+        <h2>Gemini Auto Image Saver</h2>
+        <p class="status"><span class="dot"></span> Status: ACTIVE</p>
+        <div class="row"><span>Auto Save</span><span>ON</span></div>
+        <div class="row"><span>Project</span><span>SportPesa Story</span></div>
+        <div class="row"><span>Prefix</span><span>scene_</span></div>
+        <div class="row"><span>Next file</span><span>scene_018.png</span></div>
+      </aside>
+    </section>
+
+    <section class="wrap section" id="how">
+      <h2>How it works</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <div>
+            <strong>You generate an image in Gemini</strong>
+            <p>Keep Auto Save on. The extension watches only gemini.google.com.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <div>
+            <strong>It waits until generation is finished</strong>
+            <p>Existing images in an old chat are ignored. Only newly created images are saved.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <div>
+            <strong>It writes a sequential file locally</strong>
+            <p>Chrome’s Downloads folder is used. Example:</p>
+            <p class="path">Downloads/Gemini/My YouTube Story/scene_001.png</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap section">
+      <h2>What you get</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>Sequential names</h3>
+          <p>scene_001, scene_002, scene_003. The counter survives refresh and browser restart.</p>
+        </article>
+        <article class="card">
+          <h3>Project folders</h3>
+          <p>Each YouTube story gets its own folder under Downloads/Gemini.</p>
+        </article>
+        <article class="card">
+          <h3>Duplicate protection</h3>
+          <p>Re-rendered images are skipped. A real regeneration is saved as the next number.</p>
+        </article>
+        <article class="card">
+          <h3>Fully local</h3>
+          <p>No analytics, no accounts, no upload of prompts or images.</p>
+        </article>
+        <article class="card">
+          <h3>Works in Edge</h3>
+          <p>Any Chromium browser that can load Manifest V3 extensions, including Microsoft Edge.</p>
+        </article>
+        <article class="card">
+          <h3>Your settings stay here</h3>
+          <p>Project name, prefix, and next number are stored only in this browser.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap section" id="install">
+      <h2>Install</h2>
+      <article class="card">
+        <h3>While the Chrome Web Store listing is in review</h3>
+        <p>
+          Load the unpacked `gemini-auto-image-saver` folder in Chrome via
+          chrome://extensions → Developer mode → Load unpacked.
+          Refresh Gemini if that tab was already open.
+        </p>
+        <p style="margin-top:12px;color:var(--muted)">
+          If Chrome asks where to save every file, turn off
+          “Ask where to save each file before downloading” in chrome://settings/downloads.
+          That is a Chrome setting, not an extension setting.
+        </p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-row">
+      <span>Gemini Auto Image Saver is an independent local tool. It is not affiliated with Google.</span>
+      <span>
+        <a href="privacy.html">Privacy Policy</a>
+      </span>
+    </div>
+  </footer>
+</body>
+</html>
