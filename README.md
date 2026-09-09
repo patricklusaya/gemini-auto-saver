@@ -8,6 +8,7 @@ The marketing pages are static. The only server code is `api/lemonsqueezy.js`, w
 .
 ├── index.html
 ├── thanks.html
+├── help.html
 ├── privacy.html
 ├── css/styles.css
 ├── js/site-config.js
@@ -24,6 +25,7 @@ The marketing pages are static. The only server code is `api/lemonsqueezy.js`, w
 ```text
 https://gemini-auto-saver.vercel.app/
 https://gemini-auto-saver.vercel.app/privacy
+https://gemini-auto-saver.vercel.app/help
 https://gemini-auto-saver.vercel.app/thanks
 https://gemini-auto-saver.vercel.app/api/lemonsqueezy
 ```

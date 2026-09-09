@@ -281,6 +281,57 @@ h1 {
   font-family: Consolas, "Cascadia Code", monospace;
 }
 
+.help-toc {
+  margin: 8px 0 28px;
+  color: var(--muted);
+}
+
+.help h2 {
+  margin-top: 40px;
+}
+
+.help details {
+  margin: 0 0 10px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--bg-elevated);
+}
+
+.help summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 16px 18px;
+  color: var(--text);
+  font-weight: 700;
+}
+
+.help summary::-webkit-details-marker { display: none; }
+
+.help summary::after {
+  float: right;
+  color: var(--muted);
+  font-weight: 500;
+  content: "+";
+}
+
+.help details[open] summary::after { content: "–"; }
+
+.help .faq-body {
+  padding: 0 18px 16px;
+}
+
+.help .faq-body p,
+.help .faq-body li {
+  color: var(--muted);
+}
+
+.help .faq-body ol,
+.help .faq-body ul {
+  padding-left: 20px;
+}
+
+.help .faq-body li { margin: 0 0 6px; }
+
 .footer {
   border-top: 1px solid var(--line);
   padding: 24px 0 40px;

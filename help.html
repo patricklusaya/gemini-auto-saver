@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Help — Gemini Auto Image Saver</title>
+  <meta name="description" content="Fixes for Batch Prompts, pending scenes, downloads, and Pro license issues in Gemini Auto Image Saver." />
+  <link rel="icon" href="assets/icon128.png" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="wrap nav">
+    <a class="brand" href="index.html">
+      <img src="assets/icon128.png" alt="" />
+      Gemini Auto Image Saver
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html#pro">Pro</a>
+      <a href="help.html">Help</a>
+      <a href="privacy.html">Privacy</a>
+    </nav>
+  </header>
+
+  <article class="legal help">
+    <p class="kicker">Support</p>
+    <h1>What to do when something looks stuck</h1>
+    <p>
+      Most Batch issues are the same few things: Gemini is not the active tab, the tab was refreshed,
+      Chrome asked where to save a file, or the run paused after a failure. Closing the extension popup
+      is fine. Keep the Gemini tab open and awake.
+    </p>
+
+    <p class="help-toc">
+      <a href="#batch">Batch queue</a>
+      ·
+      <a href="#start">Start and Gemini</a>
+      ·
+      <a href="#files">Downloads</a>
+      ·
+      <a href="#pro">Pro license</a>
+      ·
+      <a href="#autosave">Auto Save</a>
+      ·
+      <a href="#browser">Browser</a>
+    </p>
+
+    <h2 id="batch">Batch queue</h2>
+
+    <details open>
+      <summary>I pasted prompts, pressed Start Batch, and every scene still says Pending</summary>
+      <div class="faq-body">
+        <p>Pending means that scene has not been submitted yet. Only one scene runs at a time. Check these in order:</p>
+        <ol>
+          <li>Confirm you clicked <strong>Parse Prompts</strong> first (or Start, which will parse for you). The stats line should show a prompt count, not <code>0 Prompts</code>.</li>
+          <li>Gemini must be open at <code>https://gemini.google.com</code>. The popup hint should say <strong>Gemini tab detected</strong>. If it says Open Gemini, open that site, then Start again.</li>
+          <li>Click into the Gemini chat box once, then Start or Resume. The Send button stays disabled until Gemini sees text in the composer.</li>
+          <li>If you just reloaded the extension on <code>chrome://extensions</code>, refresh the Gemini tab, then Start again. The helper script is missing until that refresh.</li>
+          <li>Watch the first row. It should move to ▶ (Waiting for Gemini / Downloading) before the others leave Pending. If nothing moves for 20 seconds, click Stop, refresh Gemini, then Resume.</li>
+        </ol>
+        <p>If a gold <strong>Pro required</strong> card appeared, the queue is over 3 prompts on the free plan. That is not a stuck batch — Start is blocked until you buy Pro or paste a license.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Almost everything completed, but one scene stayed Pending</summary>
+      <div class="faq-body">
+        <p>The batch likely paused, stopped, or recovered after a refresh. Completed scenes are never sent again.</p>
+        <ol>
+          <li>Read the status line under the progress bar. If it says Paused, Stopped, or “Paused after a reload”, click <strong>Resume</strong> with Gemini open.</li>
+          <li>If that one scene shows Failed, click <strong>Retry</strong> on that row, then Resume if the batch is not running.</li>
+          <li>If Gemini refreshed, slept, or Chrome’s Memory Saver dumped the tab, in-flight work returns to Pending on purpose. Refresh Gemini so it is idle, then Resume.</li>
+          <li>If <strong>Continue on failure</strong> is off, a failed scene pauses the rest. Turn it on in the Batch tab, Retry the failed row, then Resume.</li>
+        </ol>
+      </div>
+    </details>
+
+    <details>
+      <summary>A scene is stuck on Waiting for Gemini / Processing / Downloading</summary>
+      <div class="faq-body">
+        <p>The extension is waiting for a <strong>new</strong> image, not a timer. Default wait is 180 seconds (Settings → Generation timeout).</p>
+        <ol>
+          <li>Look at Gemini itself. If it is still drawing, wait. If it replied with text or a safety message and no image, that scene will fail — Retry with a clearer image prompt.</li>
+          <li>If Gemini is already generating something you started by hand, wait or click Stop in Gemini, then Resume.</li>
+          <li>If it sits there with no spinner, click Pause (or Stop), refresh Gemini, click the composer, then Resume.</li>
+          <li>Slow models: raise Generation timeout in Settings (for example 300 seconds) and Resume.</li>
+        </ol>
+      </div>
+    </details>
+
+    <details>
+      <summary>It says “No image was generated” or “Image generation timed out”</summary>
+      <div class="faq-body">
+        <p>The prompt ran, but Gemini did not produce a new image the extension could see in time.</p>
+        <ul>
+          <li>Ask for an image explicitly in that prompt. A chat-only reply will fail the scene.</li>
+          <li>Click <strong>Retry</strong> on that row. Failed scenes do not consume the filename number, so Retry still writes <code>scene_003</code> if that was scene 3.</li>
+          <li>Raise the generation timeout if Gemini is just slow.</li>
+          <li>If Gemini’s layout changed and nothing ever detects, refresh the tab. If it still fails, open Help from the popup after an extension update.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>Parse says “No prompts found”</summary>
+      <div class="faq-body">
+        <p>Separate scenes with a divider. The extension does not rewrite your text.</p>
+        <p>Use one of:</p>
+        <ul>
+          <li><code>===PROMPT===</code> (recommended)</li>
+          <li><code>---PROMPT---</code> or <code>### PROMPT ###</code> or <code>===SCENE===</code></li>
+          <li>Numbered blocks like <code>SCENE 1:</code> then <code>SCENE 2:</code></li>
+        </ul>
+        <p>A single pasted paragraph with no divider is treated as one prompt, not many.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Start says a batch is already running</summary>
+      <div class="faq-body">
+        <p>Only one batch runs at a time. Use Pause or Stop, then Start or Resume. Do not click Start twice to “speed it up.”</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>I closed the popup. Did the batch stop?</summary>
+      <div class="faq-body">
+        <p>No. The loop runs in the background plus the Gemini tab. Closing the popup is fine. Reopen it to watch progress.</p>
+        <p>Do not close the Gemini tab, do not let the PC sleep, and do not let Memory Saver freeze that tab.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>I refreshed Gemini or the extension in the middle of a run</summary>
+      <div class="faq-body">
+        <p>The current scene goes back to Pending and the batch pauses. That prevents duplicate submits of scenes that already saved.</p>
+        <p>Wait until Gemini is idle, then click <strong>Resume</strong>. Completed rows stay completed.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Pause, Stop, Skip, Retry — which one?</summary>
+      <div class="faq-body">
+        <ul>
+          <li><strong>Pause</strong> — finishes the current image, then waits. Resume continues the rest.</li>
+          <li><strong>Stop</strong> — same for the current scene, then marks the batch stopped. Queue is kept. Resume later.</li>
+          <li><strong>Skip</strong> — marks that pending scene skipped. That number is left unused so later scene numbers stay aligned with your script.</li>
+          <li><strong>Retry</strong> — puts a failed or skipped scene back to Pending. Resume if the batch is not running.</li>
+          <li><strong>Clear Batch</strong> — deletes the queue. Refused while a run is in progress. Stop first.</li>
+        </ul>
+      </div>
+    </details>
+
+    <h2 id="start">Start and Gemini</h2>
+
+    <details>
+      <summary>Popup says “Could not reach Gemini” or “Open Gemini to begin”</summary>
+      <div class="faq-body">
+        <ol>
+          <li>Open <code>https://gemini.google.com</code> in a normal tab (not a screenshot, not another Google site).</li>
+          <li>Refresh that tab after installing or reloading the extension.</li>
+          <li>Click Start Batch again. The extension binds to that Gemini tab.</li>
+        </ol>
+        <p>If you have several Gemini tabs, Start uses the one that is active (or the first Gemini tab it finds). Keep one story chat in front.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>It cannot find the prompt box or Send button</summary>
+      <div class="faq-body">
+        <p>Click the Gemini composer once so it is focused, then Resume. If Gemini still looks busy, wait or press Stop in Gemini first.</p>
+        <p>If you changed the “Conversation” setting to start a new chat and the New chat button was not found, switch it back to <strong>Use current chat</strong> in Settings, refresh, and Resume.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Gemini answered in the same long chat and got confused</summary>
+      <div class="faq-body">
+        <p>Settings → Conversation → <strong>Start a new chat first</strong> begins a fresh chat before scene 1. Or start a new Gemini chat yourself, then Start Batch with “Use current chat.”</p>
+        <p>Optional <strong>Prepend global instruction</strong> is off by default. Turn it on only if you want the same character/style line added in front of every scene.</p>
+      </div>
+    </details>
+
+    <h2 id="files">Downloads and filenames</h2>
+
+    <details>
+      <summary>Chrome asks where to save every file and the batch stalls</summary>
+      <div class="faq-body">
+        <p>Turn off “Ask where to save each file before downloading”:</p>
+        <ul>
+          <li>Chrome: <code>chrome://settings/downloads</code></li>
+          <li>Edge: <code>edge://settings/downloads</code></li>
+        </ul>
+        <p>The extension cannot dismiss that system prompt. Confirm once if it already appeared, then Resume.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>I cannot find the saved images</summary>
+      <div class="faq-body">
+        <p>They go to your browser Downloads folder:</p>
+        <p class="path">Downloads/Gemini/&lt;Project Name&gt;/scene_001.png</p>
+        <p>Project name and prefix are on the <strong>Auto Save</strong> tab. Change them before Start if you want a new story folder. “Last saved” in the popup shows the newest filename.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Numbers skipped, or a failed scene reused the same number</summary>
+      <div class="faq-body">
+        <p>That is intentional. Scene 3 does not take <code>scene_003</code> until it actually saves. Retry scene 3 to write <code>scene_003</code>. Skip leaves that number unused so scene 4 can still be <code>scene_004</code> if you want the script and files to match.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Old images in the chat downloaded, or a re-render saved twice</summary>
+      <div class="faq-body">
+        <p>Auto Save ignores images that were already on the page when the tab loaded. If an old chat dumped many images at once, they are skipped as a bulk load.</p>
+        <p>The same image re-drawing in the page is usually ignored as a duplicate. A true new render from Gemini is saved as the next number. Use <strong>Download Last Image</strong> if you only want another copy (<code>_copy</code> suffix) without advancing the counter.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>Download failed toast, counter did not move</summary>
+      <div class="faq-body">
+        <p>The browser rejected the file. Check Downloads permissions, disk space, and that the Gemini tab is still open. Retry the scene. The next number is only used after a successful save.</p>
+      </div>
+    </details>
+
+    <h2 id="pro">Pro and license</h2>
+
+    <details>
+      <summary>Start Batch shows “Pro required” / free limit of 3</summary>
+      <div class="faq-body">
+        <p>Auto Save is free. Batch over 3 prompts per run needs Pro. You can still parse a long script.</p>
+        <ol>
+          <li>Click <strong>Buy Pro — one-time</strong> (or <a href="index.html#pro">buy on this site</a>).</li>
+          <li>Pay on Lemon Squeezy. Check the email you used at checkout for subject <strong>Your Gemini Auto Image Saver Pro license</strong>.</li>
+          <li>Popup → Settings → paste the <code>GAS1....</code> key → Activate license.</li>
+        </ol>
+        <p>Lemon Squeezy’s payment receipt is not the license. Only the <code>GAS1</code> key unlocks Batch.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>I paid but there is no license email</summary>
+      <div class="faq-body">
+        <ul>
+          <li>Search spam for <strong>Your Gemini Auto Image Saver Pro license</strong>.</li>
+          <li>The key is sent to the checkout email, not necessarily the Gmail on Gemini.</li>
+          <li>If you used a test From address during setup, only the store owner’s Resend account can receive mail. Real buyers need a verified sending domain.</li>
+          <li>Open the <a href="thanks.html">thanks page</a> steps, then contact support from the Chrome Web Store listing with your order email if it still never arrives.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details>
+      <summary>The key will not activate</summary>
+      <div class="faq-body">
+        <p>Paste the whole value starting with <code>GAS1.</code> — two dots, no extra spaces. A Lemon Squeezy-generated XXXX-XXXX key will fail; turn those off on the product and use only the emailed <code>GAS1</code> key.</p>
+        <p>The license is stored in this browser profile only. Activate again in Edge if you switched browsers.</p>
+      </div>
+    </details>
+
+    <h2 id="autosave">Auto Save (no batch)</h2>
+
+    <details>
+      <summary>Nothing saves when I generate an image by hand</summary>
+      <div class="faq-body">
+        <ol>
+          <li>Popup → Auto Save Images <strong>ON</strong>. Status should say ACTIVE.</li>
+          <li>Refresh Gemini after installing the extension.</li>
+          <li>Generate a <strong>new</strong> image. Images already in the chat are not downloaded.</li>
+          <li>Use <strong>Scan Current Page</strong> to see how many generated images are visible. Scan does not download old ones.</li>
+        </ol>
+      </div>
+    </details>
+
+    <details>
+      <summary>It saved a small preview instead of full size</summary>
+      <div class="faq-body">
+        <p>The extension tries Gemini’s own download URL, then a full-size hosted image, then a fallback. Compare the file with Gemini’s Download button. If it is still small, generate once more or use Download Last Image after the full render is visible.</p>
+      </div>
+    </details>
+
+    <h2 id="browser">Browser, sleep, and install</h2>
+
+    <details>
+      <summary>The PC slept, I switched apps, or Chrome used Memory Saver</summary>
+      <div class="faq-body">
+        <p>Batch pauses when the Gemini tab is frozen or the machine sleeps. Wake the PC, make sure Gemini is a real tab (not discarded), refresh if the page reloaded, then Resume.</p>
+        <p>In Chrome, pin the Gemini tab or exclude it from Memory Saver. Other tabs (CapCut, YouTube) are fine.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>I loaded the unpacked extension and nothing works on an already-open Gemini tab</summary>
+      <div class="faq-body">
+        <p>Refresh Gemini once after Load unpacked or after every Reload on <code>chrome://extensions</code>. Edge is the same at <code>edge://extensions</code>.</p>
+      </div>
+    </details>
+
+    <details>
+      <summary>It does not run on other websites</summary>
+      <div class="faq-body">
+        <p>By design it only runs on <code>https://gemini.google.com/*</code>. It does not read Google passwords or other tabs.</p>
+      </div>
+    </details>
+
+    <h2>Still stuck</h2>
+    <p>
+      Keep the Gemini tab open, reopen the popup, and read the exact status line (Paused, Failed, Pro required).
+      Retry the failed row, then Resume. For license email problems, include the checkout email when you write via the
+      Chrome Web Store support link.
+    </p>
+    <p>
+      <a class="btn" href="index.html#install">Install instructions</a>
+      <a class="btn ghost" href="index.html#pro" style="margin-left:8px">Pro</a>
+    </p>
+  </article>
+
+  <footer class="footer">
+    <div class="wrap footer-row">
+      <span>Gemini Auto Image Saver is not affiliated with Google.</span>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </footer>
+</body>
+</html>
