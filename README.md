@@ -69,7 +69,7 @@ Copy `.env.example`. Set these in the Vercel project:
 | `LEMON_SQUEEZY_WEBHOOK_SECRET` | yes | Signing secret from Lemon Squeezy → Settings → Webhooks |
 | `LICENSE_PRIVATE_KEY` | yes | Full PEM from `gemini-auto-image-saver/keys/private.pem`. Never commit this file. If the Vercel UI is one line, replace newlines with `\n`. |
 | `RESEND_API_KEY` | yes | From [resend.com](https://resend.com) |
-| `LICENSE_FROM_EMAIL` | no | Defaults to `Gemini Auto Image Saver <beth.t@example.com>` for Resend testing. Switch to your domain after you verify it. |
+| `LICENSE_FROM_EMAIL` | no | Defaults to `Gemini Auto Image Saver <onboarding@resend.dev>` for Resend testing (can only email your Resend account). Switch to your verified domain for real customers. |
 | `SITE_URL` | no | Defaults to `https://gemini-auto-saver.vercel.app` |
 | `LEMON_SQUEEZY_PRODUCT_ID` | no | Ignore orders for other products in the same store |
 | `REQUIRE_LIVE_ORDERS` | no | Set to `true` to skip Lemon Squeezy test-mode orders |
