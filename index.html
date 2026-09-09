@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gemini Auto Image Saver</title>
-  <meta name="description" content="A local Chrome and Edge extension that automatically saves newly generated Gemini images with sequential filenames. Nothing is uploaded." />
+  <meta name="description" content="Chrome and Edge extension that saves new Gemini images as numbered files, and can run a queue of image prompts on gemini.google.com." />
   <link rel="icon" href="assets/icon128.png" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
@@ -15,177 +15,114 @@
       Gemini Auto Image Saver
     </a>
     <nav class="nav-links">
-      <a href="#how">How it works</a>
+      <a href="#install">Install</a>
       <a href="#pro">Pro</a>
       <a href="help.html">Help</a>
       <a href="privacy.html">Privacy</a>
-      <a class="btn" href="#install">Get the extension</a>
     </nav>
   </header>
 
   <main>
     <section class="wrap hero">
-      <div>
-        <p class="kicker">Local Chrome / Edge extension</p>
-        <h1>Save Gemini images as they appear. In order. On your PC.</h1>
-        <p class="lede">
-          Built for scene-by-scene YouTube work. When Gemini finishes a generated image,
-          the extension downloads the best available version into a numbered project folder.
-          Prompts and images never leave your computer.
-        </p>
-        <div class="hero-actions">
-          <a class="btn" href="#install">Install instructions</a>
-          <a class="btn ghost" href="privacy.html">Read the privacy policy</a>
+      <div class="hero-split">
+        <div>
+          <h1>Numbered Gemini stills, saved as they render.</h1>
+          <p class="lede">
+            Chrome / Edge extension for people who generate scene-by-scene images on
+            gemini.google.com. New frames go to a project folder on disk. Prompts and
+            pictures stay in your browser.
+          </p>
+          <div class="hero-actions">
+            <a class="btn" href="#install">Install</a>
+            <a class="btn ghost" href="help.html">Help</a>
+          </div>
         </div>
-        <p class="hero-note">Chrome Web Store listing can be linked here after Google approves the extension.</p>
+        <figure class="figure">
+          <div class="kv">
+            <span>Auto Save</span><span>on</span>
+            <span>Project</span><span>SportPesa Story</span>
+            <span>Prefix</span><span>scene_</span>
+            <span>Next</span><span>scene_018.png</span>
+          </div>
+          <figcaption>What the popup tracks. Counter survives refresh.</figcaption>
+        </figure>
       </div>
-
-      <aside class="popup-card" aria-label="Extension popup preview">
-        <h2>Gemini Auto Image Saver</h2>
-        <p class="status"><span class="dot"></span> Status: ACTIVE</p>
-        <div class="row"><span>Auto Save</span><span>ON</span></div>
-        <div class="row"><span>Project</span><span>SportPesa Story</span></div>
-        <div class="row"><span>Prefix</span><span>scene_</span></div>
-        <div class="row"><span>Next file</span><span>scene_018.png</span></div>
-      </aside>
     </section>
 
     <section class="wrap section" id="how">
-      <h2>How it works</h2>
-      <div class="steps">
-        <div class="step">
-          <div class="num">1</div>
-          <div>
-            <strong>You generate an image in Gemini</strong>
-            <p>Keep Auto Save on. The extension watches only gemini.google.com.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div class="num">2</div>
-          <div>
-            <strong>It waits until generation is finished</strong>
-            <p>Existing images in an old chat are ignored. Only newly created images are saved.</p>
-          </div>
-        </div>
-        <div class="step">
-          <div class="num">3</div>
-          <div>
-            <strong>It writes a sequential file locally</strong>
-            <p>Chrome’s Downloads folder is used. Example:</p>
-            <p class="path">Downloads/Gemini/My YouTube Story/scene_001.png</p>
-          </div>
-        </div>
-      </div>
+      <h2>What it actually does</h2>
+      <p>
+        With Auto Save on, it watches only <code>gemini.google.com</code>. Images already
+        in the chat are ignored. When Gemini finishes a new render, the extension writes:
+      </p>
+      <p class="path">Downloads/Gemini/My YouTube Story/scene_001.png</p>
+      <p class="note">
+        Batch Prompts is the other half: paste a script split with <code>===PROMPT===</code>,
+        keep the Gemini tab open, and it submits one scene at a time after each download.
+        Closing the popup does not stop a run.
+      </p>
     </section>
 
     <section class="wrap section">
-      <h2>What you get</h2>
-      <div class="grid">
-        <article class="card">
-          <h3>Sequential names</h3>
-          <p>scene_001, scene_002, scene_003. The counter survives refresh and browser restart.</p>
-        </article>
-        <article class="card">
-          <h3>Project folders</h3>
-          <p>Each YouTube story gets its own folder under Downloads/Gemini.</p>
-        </article>
-        <article class="card">
-          <h3>Duplicate protection</h3>
-          <p>Re-rendered images are skipped. A real regeneration is saved as the next number.</p>
-        </article>
-        <article class="card">
-          <h3>Fully local</h3>
-          <p>No analytics, no accounts, no upload of prompts or images. Checkout is on this site; the extension never phones home.</p>
-        </article>
-        <article class="card">
-          <h3>Works in Edge</h3>
-          <p>Any Chromium browser that can load Manifest V3 extensions, including Microsoft Edge.</p>
-        </article>
-        <article class="card">
-          <h3>Your settings stay here</h3>
-          <p>Project name, prefix, and next number are stored only in this browser.</p>
-        </article>
-      </div>
+      <h2>Details that matter on a 50-scene job</h2>
+      <table class="specs">
+        <tr>
+          <th>Names</th>
+          <td><code>scene_001</code>, <code>scene_002</code>… The next number is stored in this browser.</td>
+        </tr>
+        <tr>
+          <th>Folders</th>
+          <td>One project name = one folder under <code>Downloads/Gemini</code>.</td>
+        </tr>
+        <tr>
+          <th>Duplicates</th>
+          <td>A DOM re-draw of the same image is skipped. A real new render takes the next number.</td>
+        </tr>
+        <tr>
+          <th>Where it runs</th>
+          <td>Chrome or Edge. Not on other Google sites. Not in the cloud.</td>
+        </tr>
+      </table>
     </section>
 
     <section class="wrap section" id="pro">
-      <h2>Free and Pro</h2>
-      <div class="pricing">
-        <article class="card">
-          <h3>Free</h3>
-          <p class="price">$0</p>
-          <p>Auto Save, project folders, and sequential names stay free. Batch is limited to 3 prompts per run so you can prove the workflow.</p>
-        </article>
-        <article class="card featured">
-          <h3>Pro</h3>
-          <p class="price">One-time</p>
-          <p>Unlimited Batch scenes. Paste a 50-prompt story, keep the Gemini tab open, and let it run. License is verified on this device — not a subscription.</p>
-          <p style="margin-top:16px">
-            <a class="btn" data-checkout href="#pro">Buy Pro</a>
-          </p>
-          <p class="hero-note checkout-fallback">Checkout will appear here once the Lemon Squeezy product link is connected.</p>
-        </article>
+      <h2>Price</h2>
+      <p>
+        Auto Save is free. Batch is free for three prompts per run. Unlimited Batch is a
+        one-time Pro license, verified on this computer. Not a subscription.
+      </p>
+      <div class="price-row">
+        <strong>$19</strong>
+        <a class="btn" data-checkout href="#pro">Buy Pro</a>
       </div>
-    </section>
-
-    <section class="wrap section" id="help">
-      <h2>If something looks stuck</h2>
-      <article class="card">
-        <h3>Batch pending, one scene left, downloads, license</h3>
-        <p>
-          Closing the popup is fine. Keep the Gemini tab open. If every scene stays Pending after Start,
-          refresh Gemini and click Start again. If only one scene is still Pending, click Resume (or Retry
-          on a Failed row).
-        </p>
-        <p style="margin-top:14px">
-          <a class="btn" href="help.html">Open the full help guide</a>
-        </p>
-      </article>
+      <p class="note">
+        After checkout, Lemon Squeezy takes payment and we email a <code>GAS1</code> key
+        to the address you used there. Paste it in Settings. Receipt email ≠ license.
+      </p>
     </section>
 
     <section class="wrap section" id="install">
       <h2>Install</h2>
-      <article class="card">
-        <h3>While the Chrome Web Store listing is in review</h3>
-        <p>
-          Load the unpacked `gemini-auto-image-saver` folder in Chrome via
-          chrome://extensions → Developer mode → Load unpacked.
-          Refresh Gemini if that tab was already open.
-        </p>
-        <p style="margin-top:12px;color:var(--muted)">
-          If Chrome asks where to save every file, turn off
-          “Ask where to save each file before downloading” in chrome://settings/downloads.
-          That is a Chrome setting, not an extension setting.
-        </p>
-      </article>
+      <ol>
+        <li>If the Chrome Web Store listing is live, install from there. Otherwise: <code>chrome://extensions</code> → Developer mode → Load unpacked → select the <code>gemini-auto-image-saver</code> folder.</li>
+        <li>Refresh any Gemini tab that was already open.</li>
+        <li>Turn off “Ask where to save each file before downloading” in <code>chrome://settings/downloads</code> (or Edge’s downloads settings). The extension cannot click that dialog for you.</li>
+      </ol>
+      <p class="note">Stuck on Pending scenes, timeouts, or a missing license email? See <a href="help.html">Help</a>.</p>
     </section>
   </main>
 
   <footer class="footer">
     <div class="wrap footer-row">
-      <span>Gemini Auto Image Saver is an independent local tool. It is not affiliated with Google.</span>
+      <span>Independent tool. Not affiliated with Google.</span>
       <span>
         <a href="help.html">Help</a>
         ·
-        <a href="index.html#pro">Pro</a>
-        ·
-        <a href="privacy.html">Privacy Policy</a>
+        <a href="privacy.html">Privacy</a>
       </span>
     </div>
   </footer>
   <script src="js/site-config.js"></script>
-  <script>
-    (function () {
-      var url = window.GAS_SITE && window.GAS_SITE.checkoutUrl;
-      var buttons = document.querySelectorAll("[data-checkout]");
-      var fallback = document.querySelector(".checkout-fallback");
-      if (url) {
-        buttons.forEach(function (el) { el.setAttribute("href", url); });
-        if (fallback) fallback.hidden = true;
-      } else {
-        buttons.forEach(function (el) { el.hidden = true; });
-      }
-    })();
-  </script>
+  <script src="js/site.js"></script>
 </body>
 </html>
