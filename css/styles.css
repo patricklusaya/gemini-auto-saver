@@ -206,6 +206,25 @@ h1 {
   color: var(--muted);
 }
 
+.pricing {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.card .price {
+  margin: 0 0 10px;
+  color: var(--text);
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.card.featured {
+  border-color: #3157a8;
+  box-shadow: 0 0 0 1px rgba(76, 141, 255, 0.25);
+}
+
 .steps {
   display: grid;
   gap: 12px;
@@ -258,6 +277,9 @@ h1 {
 
 .legal p, .legal li { color: var(--muted); }
 .legal ul { padding-left: 20px; }
+.legal code, .path {
+  font-family: Consolas, "Cascadia Code", monospace;
+}
 
 .footer {
   border-top: 1px solid var(--line);
@@ -274,6 +296,6 @@ h1 {
 }
 
 @media (max-width: 860px) {
-  .hero, .grid { grid-template-columns: 1fr; }
+  .hero, .grid, .pricing { grid-template-columns: 1fr; }
   .nav-links { font-size: 14px; }
 }

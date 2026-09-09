@@ -16,6 +16,7 @@
     </a>
     <nav class="nav-links">
       <a href="index.html">Home</a>
+      <a href="index.html#pro">Pro</a>
       <a href="privacy.html">Privacy</a>
     </nav>
   </header>
@@ -23,12 +24,13 @@
   <article class="legal">
     <p class="kicker">Legal</p>
     <h1>Privacy Policy</h1>
-    <p>Last updated: 7 September 2026</p>
+    <p>Last updated: 9 September 2026</p>
 
     <p>
       This Privacy Policy describes how the <strong>Gemini Auto Image Saver</strong> browser extension
-      (“the Extension”) handles information. The Extension is designed to operate entirely on your
-      computer. It does not have a backend server, analytics service, or account system.
+      (“the Extension”) and this website handle information. Image saving and Batch prompts run
+      entirely on your computer. Checkout for Pro is a separate path on this website and uses
+      Lemon Squeezy. The Extension does not upload prompts, chats, or generated images.
     </p>
 
     <h2>1. Who we are</h2>
@@ -62,6 +64,8 @@
       <li>download delay and retry count</li>
       <li>fingerprints of already processed images, to prevent duplicate downloads</li>
       <li>a short local history of recent filenames and timestamps</li>
+      <li>Batch queue state while a prompt run is in progress</li>
+      <li>an optional Pro license key and its decoded payload, if you paste one</li>
     </ul>
     <p>
       Generated image files are saved through the browser Downloads API, typically under
@@ -89,14 +93,26 @@
     <ul>
       <li><strong>storage</strong> — to remember your project settings and download counter on this device.</li>
       <li><strong>downloads</strong> — to save image files into your Downloads folder without a remote server.</li>
-      <li><strong>https://gemini.google.com/*</strong> — to detect newly generated images on Gemini and request a local download. The Extension does not run on other websites.</li>
+      <li><strong>scripting</strong> — to run the Batch prompt loop on the open Gemini tab.</li>
+      <li><strong>https://gemini.google.com/*</strong> — to detect newly generated images on Gemini, request a local download, and paste the next Batch prompt. The Extension does not run on other websites.</li>
     </ul>
 
     <h2>6. Third parties</h2>
     <p>
-      The developer does not send Extension data to third parties. Chrome or Edge may process downloads
-      using the browser’s own download manager. Gemini itself is operated by Google and is governed by
-      Google’s own terms and privacy policy.
+      Daily use of the Extension does not send your prompts, chats, or images to the developer or to
+      a license server. Chrome or Edge may process downloads using the browser’s own download manager.
+      Gemini itself is operated by Google and is governed by Google’s own terms and privacy policy.
+    </p>
+    <p>
+      If you buy Pro, payment is processed by <strong>Lemon Squeezy</strong> (merchant of record).
+      Lemon Squeezy receives the information needed to take payment and issue a receipt. After a paid
+      order, this website’s checkout webhook receives your order id and checkout email so we can sign
+      a license key and email it to you with <strong>Resend</strong>. We do not receive your card
+      number. The license key is then stored only in your browser if you activate it in Settings.
+    </p>
+    <p>
+      Lemon Squeezy’s privacy policy applies to checkout. Resend processes the license email. We do
+      not use that email for marketing.
     </p>
 
     <h2>7. Retention and deletion</h2>
@@ -110,7 +126,9 @@
       <li>delete downloaded image files from your Downloads folder yourself</li>
     </ul>
     <p>
-      Because the developer never receives this data, there is no cloud copy to delete on a remote server.
+      Local extension data is not stored on a remote server, so there is no cloud copy of prompts or
+      images to delete. If you bought Pro, Lemon Squeezy keeps the purchase record. You can delete the
+      license from the Extension Settings on this device.
     </p>
 
     <h2>8. Children</h2>

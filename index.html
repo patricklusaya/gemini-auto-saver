@@ -16,6 +16,7 @@
     </a>
     <nav class="nav-links">
       <a href="#how">How it works</a>
+      <a href="#pro">Pro</a>
       <a href="privacy.html">Privacy</a>
       <a class="btn" href="#install">Get the extension</a>
     </nav>
@@ -93,7 +94,7 @@
         </article>
         <article class="card">
           <h3>Fully local</h3>
-          <p>No analytics, no accounts, no upload of prompts or images.</p>
+          <p>No analytics, no accounts, no upload of prompts or images. Checkout is on this site; the extension never phones home.</p>
         </article>
         <article class="card">
           <h3>Works in Edge</h3>
@@ -102,6 +103,26 @@
         <article class="card">
           <h3>Your settings stay here</h3>
           <p>Project name, prefix, and next number are stored only in this browser.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="wrap section" id="pro">
+      <h2>Free and Pro</h2>
+      <div class="pricing">
+        <article class="card">
+          <h3>Free</h3>
+          <p class="price">$0</p>
+          <p>Auto Save, project folders, and sequential names stay free. Batch is limited to 3 prompts per run so you can prove the workflow.</p>
+        </article>
+        <article class="card featured">
+          <h3>Pro</h3>
+          <p class="price">One-time</p>
+          <p>Unlimited Batch scenes. Paste a 50-prompt story, keep the Gemini tab open, and let it run. License is verified on this device — not a subscription.</p>
+          <p style="margin-top:16px">
+            <a class="btn" data-checkout href="#pro">Buy Pro</a>
+          </p>
+          <p class="hero-note checkout-fallback">Checkout will appear here once the Lemon Squeezy product link is connected.</p>
         </article>
       </div>
     </section>
@@ -128,9 +149,25 @@
     <div class="wrap footer-row">
       <span>Gemini Auto Image Saver is an independent local tool. It is not affiliated with Google.</span>
       <span>
+        <a href="index.html#pro">Pro</a>
+        ·
         <a href="privacy.html">Privacy Policy</a>
       </span>
     </div>
   </footer>
+  <script src="js/site-config.js"></script>
+  <script>
+    (function () {
+      var url = window.GAS_SITE && window.GAS_SITE.checkoutUrl;
+      var buttons = document.querySelectorAll("[data-checkout]");
+      var fallback = document.querySelector(".checkout-fallback");
+      if (url) {
+        buttons.forEach(function (el) { el.setAttribute("href", url); });
+        if (fallback) fallback.hidden = true;
+      } else {
+        buttons.forEach(function (el) { el.hidden = true; });
+      }
+    })();
+  </script>
 </body>
 </html>
