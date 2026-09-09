@@ -18,26 +18,22 @@ future page, section, and component must follow this file.
 
 ## 2. Brand direction
 
-- **Visual style:** Minimal workshop / instruction sheet. Light paper, one rust
-  accent, no fake UI chrome
+- **Visual style:** Minimal workshop / instruction sheet. Cool paper tinted from
+  the icon, one blue accent sampled from the mark, no fake UI chrome
 - **Mood & tone:** Direct, practical, unhurried
 - **Design personality:** Corporate-clean with a technical edge (grotesque + mono
   paths, not editorial serif)
-- **Design concept (one sentence — the Step 2.7 commitment):** a one-column
-  instruction sheet for a local Chrome tool — oversized job-in-the-headline type,
-  a real download path as the only “product shot,” vermillion used only on
-  buttons, zero mock popups
+- **Design concept (one sentence — the Step 2.7 commitment):** a dense Chrome-extension
+  product page — compact hero (not a stretched viewport), three numbered beats,
+  a two-column facts/price band, and an install list; logo blues; path chip as
+  the only product artifact; zero mock popups
 - **Adversarial-review verdict:** Cover the brand name and it still reads as a
-  local batch-download utility, not generic “AI SaaS.” Weakness found: the old
-  dark-serif page plus a fake Auto Save popup made the job opaque and looked like
-  AI-premium theater — removed the mock, switched to light paper + Hanken Grotesk,
-  and rewrote the hero as a single job sentence
-- **Reference style used:** Web galleries were not browsed this pass. Named
-  exemplars: Linear’s density (tight nav, no card soup), Stripe’s restraint (one
-  accent, long measure, no decorative mesh), a printed spec sheet (path as the
-  artifact). Moves adapted: one primary button style; left-aligned type in a
-  centered column instead of a left-text/right-mockup split; mono only for
-  filenames
+  local batch tool. Weakness found: the 100svh hero left a dead field of paper
+  around a thin column — that is what made it feel unfinished. Fixed by packing
+  the first screen and alternating surface bands.
+- **Reference style used:** Named exemplars: Linear’s density (tight nav, no
+  empty hero well), Stripe’s restraint (one accent, section bands, no mesh).
+  Move adapted: hero is short and the next section starts in the same viewport
 - **Voice & UX copy:** Plain verbs. Headline says the job. CTA labels: **Install**
   (primary), **How it works** (secondary), **Buy Pro** (checkout only). No
   “Elevate / Seamless / Next-gen.” Errors and help copy name the fix (refresh
@@ -45,32 +41,36 @@ future page, section, and component must follow this file.
 
 ## 3. Color system
 
-Restrained strategy: tinted warm neutrals + one accent.
+Restrained strategy: cool neutrals tinted toward the icon’s indigo + one accent
+sampled from the PNG (`#326af3` bright blue → `#424ce2` indigo). The brief
+overrides the “don’t use AI-startup purple” reflex because the user asked the
+site to match the existing logo. Page stays light; no purple-on-dark mesh.
 
 | Role | Color | Hex | Usage |
 |---|---|---|---|
-| 60% — Dominant | Paper | `#f7f6f2` | Page background, sticky nav |
-| 30% — Secondary | Board | `#eeece6` | Footer, path chip, raised blocks |
-| 10% — Accent | Vermillion | `#c43b1a` | Primary buttons only |
-| Ink | Near-black warm | `#1b1916` | Headings, links, focus ring |
-| Muted | Warm gray | `#4a4640` | Body, supporting copy |
-| Accent hover | Deep rust | `#b13218` | Primary button hover |
-| Accent ink | Warm paper | `#fffaf7` | Text on primary buttons |
+| 60% — Dominant | Cool paper | `#f4f6fb` | Page background, sticky nav |
+| 30% — Secondary | Board | `#e8ebf4` | Footer, path chip, raised blocks |
+| 10% — Accent | Icon blue | `#326af3` | Primary buttons (sampled from icon, ~341,341) |
+| Ink | Cool near-black | `#14161f` | Headings, links, focus ring |
+| Muted | Cool gray | `#3d4456` | Body, supporting copy |
+| Accent hover | Icon indigo | `#424ce2` | Button hover; link hover (sampled ~682,682) |
+| Accent ink | White | `#ffffff` | Text on primary buttons — same as the icon glyph |
 
 **Computed contrast (WCAG 2.x relative luminance):**
-- Ink `#1b1916` on paper: **16.22:1** (AA body)
-- Muted `#4a4640` on paper: **8.66:1** (AA body)
-- Muted on board `#eeece6`: **7.93:1** (AA body)
-- Accent ink `#fffaf7` on accent `#c43b1a`: **5.08:1** (AA body)
-- Accent `#c43b1a` on paper: **4.87:1** (AA body — allowed for hover link color)
-- Accent hover `#b13218` on paper: **5.82:1**
+- Ink `#14161f` on paper: **16.68:1** (AA body)
+- Muted `#3d4456` on paper: **8.99:1** (AA body)
+- Muted on board `#e8ebf4`: **8.16:1** (AA body)
+- Accent ink `#ffffff` on accent `#326af3`: **4.68:1** (AA body)
+- Accent ink on hover `#424ce2`: **6.24:1** (AA body)
+- Hover indigo `#424ce2` on paper: **5.77:1** (AA body — used for link hover)
+- Bright accent `#326af3` on paper: **4.32:1** — not used as body text; buttons only
 
 **Usage rules:**
 - Backgrounds: paper only at page level; board for footer and the download-path chip
 - Text: ink for headings and default links; muted for body/supporting (never lighter)
-- Buttons: filled vermillion + accent-ink label; ghost = ink outline on paper
+- Buttons: filled icon-blue + white label; hover fills icon-indigo; ghost = ink outline on paper
 - Cards: none. Elevation is a flat board fill, not a drop shadow
-- Highlights / focus: `2px solid #1b1916`, offset 3px, `:focus-visible` only
+- Highlights / focus: `2px solid #14161f`, offset 3px, `:focus-visible` only
 - Separation: background shift (paper → board) and spacing. Hairline dividers only
   on the spec table and help `<details>` — not for elevating cards
 - **Dark mode:** not shipped. Do not invert these tokens without a full AA re-check
@@ -103,32 +103,30 @@ Restrained strategy: tinted warm neutrals + one accent.
 
 ## 5. Layout system
 
-- **Container widths:** `--wide: min(880px, calc(100% - 40px))` for landing;
+- **Container widths:** `--wide: min(1040px, calc(100% - 48px))` for landing;
   `--page: min(720px, calc(100% - 40px))` for legal/help
-- **Section spacing:** `--space-5` (64px) below sections; hero padding
-  `--space-4` / `--space-5`
-- **Grid rules:** one column. No 12-column grid. No left-copy / right-visual split
-- **Page anatomy / section order:** sticky nav → oversized hero → how it works
-  (path artifact) → how files are saved (spec table) → price → install → footer.
-  No trust logos, no testimonial wall, no zigzag features
-- **Conversion / CTA flow:** primary goal = Install. Primary style = filled
-  vermillion. Repeats in nav, hero, after How it works, and as the Install
-  section itself. Secondary = ghost “How it works”. Checkout = “Buy Pro” (different
-  intent, same button style because it is the only paid action)
+- **Section spacing:** bands `52px` vertical padding (`40px` under 720px). Hero
+  `56px / 48px` (not viewport-tall). Footer `20px`
+- **Grid rules:** three-column steps; two-column facts/price from 860px up. No
+  left-copy / right-visual hero split
+- **Page anatomy / section order:** sticky header → compact hero → how it works
+  (3 steps + path) → files + price split → install → footer
+- **Conversion / CTA flow:** primary goal = Install. Filled icon-blue. Repeats in
+  nav, hero, and after How it works. Install section is the final conversion
+  (instructions). Secondary = ghost “How it works”. Checkout = “Buy Pro”
 - **Surface-specific flows:** Help uses a compact TOC + native `<details>`
-  accordion. Privacy/thanks use the legal article measure. No store listing/PDP
-- **Hero composition:** oversized-typographic, left-aligned inside a vertically
-  centered column (`min-height: calc(100svh - 64px); display: grid; place-items: center`).
-  Striking move: the headline *is* the explanation; there is no product screenshot.
-  Not a split. Headline target: ≤2 lines on desktop
-- **Full-screen sections:** only the hero is viewport-tall. Later sections are
-  content-height so a 700px laptop is not a slideshow of sparse panels
+  accordion. Privacy/thanks use the legal article measure
+- **Hero composition:** oversized-typographic, left-aligned in a short block
+  (`padding` only — **no** `min-height: 100svh`). Brief override: empty
+  viewport centering made the site look unfinished. Headline still fits in the
+  first viewport because the block is short. Not a split
+- **Full-screen sections:** none. Every section is content-height
 - **Horizontal card rails / scroll section(s):** none
 - **Mobile-first behavior:** below 720px, nav stays one row (Menu + Install);
-  hero inner goes full width; buttons wrap; no custom hamburger JS
-- **Breakpoints:** 375 / 720 / 1280. Height checks at ~700 and ~800
-- **Alignment rules:** left rag in the centered column. Tables left-aligned. Footer
-  space-between
+  steps and split stack to one column
+- **Breakpoints:** 375 / 720 / 860 / 1280
+- **Alignment rules:** left rag. Header and bands are full-bleed; inner wrap is
+  centered. Footer space-between
 
 ## 6. Component system
 
@@ -139,10 +137,9 @@ Restrained strategy: tinted warm neutrals + one accent.
   0.98. No disabled buttons on the marketing site
 - **Cards:** not used
 - **Badges:** not used. No sparkle/AI pills
-- **Navbar:** sticky, paper background, wordmark + icon 28×28, text links muted,
-  one Install button. Same pattern on inner pages (Install points at
-  `index.html#install`). Below 720px, secondary links collapse into a native
-  `<details>` Menu so the bar stays one row; Install stays visible
+- **Navbar:** sticky full-bleed bar, paper + surface hairline, wordmark + icon
+  28×28, text links muted, one Install button. Below 720px, secondary links
+  collapse into a native `<details>` Menu
 - **Footer:** board fill, caption size, help/privacy links
 - **Forms:** none on the static site (checkout is Lemon Squeezy)
 - **Inputs:** none
@@ -151,9 +148,13 @@ Restrained strategy: tinted warm neutrals + one accent.
 
 ## 7. Card & section style
 
-- **Chosen style:** borderless / flat. Path chip is a rounded board rectangle
-- **Radius:** `--radius: 6px` (buttons and path only)
-- **Shadow / elevation:** none
+- **Chosen style:** borderless / flat bands. Path chip is a rounded board
+  rectangle. How/install sit on paper; files+price sit on board
+- **Radius:** `--radius: 8px` (buttons, path, icon crop)
+- **Shadow / elevation:** none — bands separate by background shift
+- **Gradients:** none
+- **Glassmorphism:** none
+- **Rule:** do not nest surfaces. Do not add a fake browser/popup frame
 - **Gradients:** none
 - **Glassmorphism:** none
 - **Rule:** do not nest surfaces. Do not add a fake browser/popup frame
@@ -203,8 +204,8 @@ Restrained strategy: tinted warm neutrals + one accent.
 
 ## 11. Accessibility rules
 
-- **Contrast rules:** body/supporting ≥ 4.5:1 (muted 8.66:1). Button label 5.08:1.
-  Recompute if tokens change
+- **Contrast rules:** body/supporting ≥ 4.5:1 (muted 8.99:1). Button label 4.68:1
+  on `#326af3`. Recompute if tokens change
 - **Focus states:** `:focus-visible` ink ring on links and buttons. Skip link
   revealed with `:focus-visible`
 - **Keyboard navigation:** skip-to-content → `#main`; native details/summary on
@@ -219,17 +220,22 @@ Restrained strategy: tinted warm neutrals + one accent.
 
 Canonical gate: ui-ux-kit `SKILL.md` pre-flight + landing §B1.
 
-- **Approved palette (the only colors allowed):** `#f7f6f2`, `#eeece6`, `#1b1916`,
-  `#4a4640`, `#c43b1a`, `#b13218`, `#fffaf7`
-- **Pure `#000`/`#fff` used?** No
-- **Concept-test verdict (from §2):** still distinctive as an instruction sheet
-  with a file path, not a purple AI dashboard. Weakness (fake popup + serif
-  headline) fixed
+- **Approved palette (the only colors allowed):** `#f4f6fb`, `#e8ebf4`, `#14161f`,
+  `#3d4456`, `#326af3`, `#424ce2`, `#ffffff`
+- **Pure `#000`/`#fff` used?** `#ffffff` on buttons only — it is the icon glyph
+  color, documented as a logo match, not a default
+- **Concept-test verdict (from §2):** still an instruction sheet with a file path.
+  Blues come from the PNG, not a generic AI gradient page. Weakness (warm
+  vermillion vs blue icon) fixed
 - **Project-specific exceptions to the gate:** no trust bar / social proof (no
   customers to show honestly). No product screenshot (user asked the popup mock
   removed). Hero is the only full-viewport section so 700px laptops are not
   padded into empty bands. “Buy Pro” shares the primary button style because it
-  is a different intent, not a second Install
+  is a different intent, not a second Install. Logo-matching blue/indigo is an
+  explicit brief override of the “AI purple” reflex; the page stays light and
+  has no decorative gradient. Hero is **not** `min-height: 100svh`: the user
+  asked to kill empty space, so the first viewport is packed (hero + start of
+  How it works) instead of a vertically centered lonely column
 
 ## 13. Future page instructions
 
