@@ -1,5 +1,5 @@
-const crypto = require("crypto");
 const { issuePaidLicense } = require("../lib/issue");
+const { verifyPolarWebhook } = require("../lib/polar-signature");
 
 async function readRawBody(req) {
   if (Buffer.isBuffer(req.body)) return req.body;
@@ -7,14 +7,6 @@ async function readRawBody(req) {
   const chunks = [];
   for await (const chunk of req) chunks.push(Buffer.from(chunk));
   return Buffer.concat(chunks);
-}
-
-function signaturesMatch(rawBody, header, secret) {
-  const hmac = crypto.createHmac("sha256", secret);
-  const digest = Buffer.from(hmac.update(rawBody).digest("hex"), "utf8");
-  const signature = Buffer.from(header || "", "utf8");
-  if (!signature.length || digest.length !== signature.length) return false;
-  return crypto.timingSafeEqual(digest, signature);
 }
 
 function json(res, status, body) {
@@ -25,7 +17,7 @@ function json(res, status, body) {
 
 module.exports = async function handler(req, res) {
   if (req.method === "GET") {
-    json(res, 200, { ok: true, service: "lemon-squeezy-webhook" });
+    json(res, 200, { ok: true, service: "polar-webhook" });
     return;
   }
 
@@ -34,7 +26,7 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const secret = process.env.LEMON_SQUEEZY_WEBHOOK_SECRET;
+  const secret = process.env.POLAR_WEBHOOK_SECRET;
   if (!secret) {
     json(res, 500, { ok: false, error: "Webhook secret is not configured." });
     return;
@@ -43,13 +35,12 @@ module.exports = async function handler(req, res) {
   let rawBody;
   try {
     rawBody = await readRawBody(req);
-  } catch (error) {
+  } catch (_error) {
     json(res, 400, { ok: false, error: "Could not read body." });
     return;
   }
 
-  const header = req.headers["x-signature"] || req.headers["X-Signature"];
-  if (!signaturesMatch(rawBody, header, secret)) {
+  if (!verifyPolarWebhook(rawBody, req.headers, secret)) {
     json(res, 400, { ok: false, error: "Invalid signature." });
     return;
   }
@@ -62,32 +53,36 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const eventName = payload && payload.meta && payload.meta.event_name;
-  if (eventName !== "order_created") {
+  const eventName = payload && payload.type;
+  if (eventName !== "order.paid") {
     json(res, 200, { ok: true, ignored: true, event: eventName || null });
     return;
   }
 
   const data = payload.data || {};
-  const attrs = data.attributes || {};
-  const item = attrs.first_order_item || {};
-  const orderId = data.id || attrs.order_number || item.order_id;
-  const email = String(attrs.user_email || "").trim();
-  const status = String(attrs.status || "").toLowerCase();
-  const productId = item.product_id != null ? String(item.product_id) : "";
-  const expectedProduct = String(process.env.LEMON_SQUEEZY_PRODUCT_ID || "").trim();
-
-  if (process.env.REQUIRE_LIVE_ORDERS === "true" && attrs.test_mode) {
-    json(res, 200, { ok: true, skipped: "test_mode" });
-    return;
-  }
+  const customer = data.customer || {};
+  const orderId = data.id || data.number;
+  const email = String(customer.email || data.email || "").trim();
+  const status = String(data.status || "").toLowerCase();
+  const reason = String(data.billing_reason || "purchase");
+  const productId = data.product_id != null
+    ? String(data.product_id)
+    : data.product && data.product.id != null
+      ? String(data.product.id)
+      : "";
+  const expectedProduct = String(process.env.POLAR_PRODUCT_ID || "").trim();
 
   if (expectedProduct && productId && productId !== expectedProduct) {
     json(res, 200, { ok: true, skipped: "other_product" });
     return;
   }
 
-  if (status !== "paid") {
+  if (reason && reason !== "purchase") {
+    json(res, 200, { ok: true, skipped: "not_purchase", reason });
+    return;
+  }
+
+  if (status && status !== "paid") {
     json(res, 200, { ok: true, skipped: "not_paid", status });
     return;
   }
@@ -101,9 +96,9 @@ module.exports = async function handler(req, res) {
     await issuePaidLicense({
       orderId,
       email,
-      source: "Lemon Squeezy"
+      source: "Polar"
     });
-    console.log("Issued Pro license for Lemon Squeezy order", String(orderId));
+    console.log("Issued Pro license for Polar order", String(orderId));
     json(res, 200, { ok: true, emailed: true });
   } catch (error) {
     console.error("License issue failed:", error && error.message);

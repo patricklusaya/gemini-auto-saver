@@ -141,7 +141,7 @@ site to match the existing logo. Page stays light; no purple-on-dark mesh.
   28×28, text links muted, one Install button. Below 720px, secondary links
   collapse into a native `<details>` Menu
 - **Footer:** board fill, caption size, help/privacy links
-- **Forms:** none on the static site (checkout is Lemon Squeezy)
+- **Forms:** none on the static site (checkout is Polar or Lemon Squeezy)
 - **Inputs:** none
 - **Feature sections:** prose + optional path chip or spec table
 - **CTA sections:** Install is a heading + numbered list, not a marketing banner
@@ -186,7 +186,7 @@ site to match the existing logo. Page stays light; no purple-on-dark mesh.
 - **Cursor pointer rules:** `cursor: pointer` on buttons and summary rows
 - **Interaction states:** default / hover / `:focus-visible` / `:active`. Disabled
   not used
-- **Async feedback:** checkout is a full navigation to Lemon Squeezy (no in-page
+- **Async feedback:** checkout is a full navigation to Polar or Lemon Squeezy (no in-page
   spinner). Help is static
 - **Toast / inline message system:** none
 - **Form feedback:** n/a

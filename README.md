@@ -2,7 +2,7 @@
 
 Public landing page, privacy policy, and Pro checkout webhook for [Gemini Auto Image Saver](https://github.com/patricklusaya/gemini-auto-saver).
 
-The marketing pages are static. The only server code is `api/lemonsqueezy.js`, which receives a Lemon Squeezy order, signs a `GAS1` license, and emails it. The browser extension never calls this API.
+The marketing pages are static. Server routes under `api/` receive checkout webhooks (Lemon Squeezy and Polar), sign a `GAS1` license, and email it. The browser extension never calls these APIs.
 
 ```text
 .
@@ -13,8 +13,11 @@ The marketing pages are static. The only server code is `api/lemonsqueezy.js`, w
 ├── css/styles.css
 ├── js/site-config.js
 ├── api/lemonsqueezy.js
+├── api/polar.js
 ├── lib/sign.js
 ├── lib/email.js
+├── lib/issue.js
+├── lib/polar-signature.js
 ├── assets/icon128.png
 ├── vercel.json
 └── README.md
@@ -28,6 +31,7 @@ https://gemini-auto-saver.vercel.app/privacy
 https://gemini-auto-saver.vercel.app/help
 https://gemini-auto-saver.vercel.app/thanks
 https://gemini-auto-saver.vercel.app/api/lemonsqueezy
+https://gemini-auto-saver.vercel.app/api/polar
 ```
 
 Use the privacy URL in the Chrome Web Store listing.
@@ -52,15 +56,34 @@ After the site is live:
 
 The extension `manifest.json` already uses this homepage URL.
 
-## Pro checkout (Lemon Squeezy)
+## Pro checkout (multiple merchants of record)
 
-The extension verifies licenses locally. It cannot receive webhooks. Flow:
+The extension verifies licenses locally. It cannot receive webhooks. Both Polar and Lemon Squeezy can take payment. Each has its own webhook. Both issue the same `GAS1` key by email.
 
-1. Customer pays on Lemon Squeezy.
-2. Lemon Squeezy POSTs `order_created` to `/api/lemonsqueezy`.
-3. The function verifies `X-Signature` (HMAC-SHA256 of the **raw** body).
-4. If the order status is `paid`, it signs a unique `GAS1` key and emails it with Resend.
-5. The customer pastes the key in Extension → Settings.
+Set the live Buy Pro destination in `js/site-config.js`:
+
+```js
+window.GAS_SITE = {
+  defaultMor: "polar",
+  mors: {
+    polar: {
+      checkoutUrl: "https://buy.polar.sh/YOUR-CHECKOUT"
+    },
+    lemonsqueezy: {
+      checkoutUrl: "https://geminiautosaver.lemonsqueezy.com/checkout/buy/YOUR-VARIANT"
+    }
+  }
+};
+```
+
+`defaultMor` is which checkout the Buy Pro buttons open. If that URL is empty, the site uses the other non-empty checkout URL.
+
+Flow:
+
+1. Customer pays on the default merchant of record.
+2. That provider POSTs to `/api/polar` (`order.paid`) or `/api/lemonsqueezy` (`order_created`).
+3. The function verifies the signature, signs a unique `GAS1` key, and emails it with Resend.
+4. The customer pastes the key in Extension → Settings.
 
 ### Environment variables (Vercel)
 
@@ -68,15 +91,27 @@ Copy `.env.example`. Set these in the Vercel project:
 
 | Name | Required | Purpose |
 | --- | --- | --- |
-| `LEMON_SQUEEZY_WEBHOOK_SECRET` | yes | Signing secret from Lemon Squeezy → Settings → Webhooks |
+| `POLAR_WEBHOOK_SECRET` | for Polar | Signing secret from Polar → Settings → Webhooks |
+| `LEMON_SQUEEZY_WEBHOOK_SECRET` | for Lemon Squeezy | Signing secret from Lemon Squeezy → Settings → Webhooks |
 | `LICENSE_PRIVATE_KEY` | yes | Full PEM from `gemini-auto-image-saver/keys/private.pem`. Never commit this file. If the Vercel UI is one line, replace newlines with `\n`. |
 | `RESEND_API_KEY` | yes | From [resend.com](https://resend.com) |
 | `LICENSE_FROM_EMAIL` | no | Defaults to `Gemini Auto Image Saver <onboarding@resend.dev>` for Resend testing (can only email your Resend account). Switch to your verified domain for real customers. |
 | `SITE_URL` | no | Defaults to `https://gemini-auto-saver.vercel.app` |
-| `LEMON_SQUEEZY_PRODUCT_ID` | no | Ignore orders for other products in the same store |
+| `POLAR_PRODUCT_ID` | no | Ignore Polar orders for other products |
+| `LEMON_SQUEEZY_PRODUCT_ID` | no | Ignore Lemon Squeezy orders for other products |
 | `REQUIRE_LIVE_ORDERS` | no | Set to `true` to skip Lemon Squeezy test-mode orders |
 
 Do **not** put `private.pem` in this repo or in the extension package.
+
+### Polar dashboard
+
+1. Product: one-time Pro license. Do **not** enable Polar’s built-in license-key benefit.
+2. Success URL: `https://gemini-auto-saver.vercel.app/thanks`
+3. Settings → Webhooks:
+   - URL: `https://gemini-auto-saver.vercel.app/api/polar`
+   - Event: **`order.paid` only** (do not select all events)
+   - Signing secret: the same value as `POLAR_WEBHOOK_SECRET`
+4. Paste the Polar checkout URL into `js/site-config.js` under `mors.polar.checkoutUrl`. Keep `defaultMor: "polar"`.
 
 ### Lemon Squeezy dashboard
 
@@ -86,19 +121,8 @@ Do **not** put `private.pem` in this repo or in the extension package.
    - URL: `https://gemini-auto-saver.vercel.app/api/lemonsqueezy`
    - Event: `order_created`
    - Signing secret: the same value as `LEMON_SQUEEZY_WEBHOOK_SECRET`
-4. Run a test checkout. You should get a `GAS1....` email. Paste it in the extension Settings.
 
-### Buy button on this site
-
-Paste the Lemon Squeezy checkout / buy URL into `js/site-config.js`:
-
-```js
-window.GAS_SITE = {
-  checkoutUrl: "https://YOUR-STORE.lemonsqueezy.com/checkout/buy/YOUR-VARIANT"
-};
-```
-
-Until that is set, the Buy Pro button stays hidden.
+Until a checkout URL is set for the default MoR (or any fallback MoR), the Buy Pro button stays hidden.
 
 ## Local preview
 
