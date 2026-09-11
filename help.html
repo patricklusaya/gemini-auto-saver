@@ -39,6 +39,8 @@
     </p>
 
     <p class="help-toc">
+      <a href="#prompt-format">Prompt format</a>
+      ·
       <a href="#batch">Batch queue</a>
       ·
       <a href="#start">Start and Gemini</a>
@@ -50,6 +52,32 @@
       <a href="#autosave">Auto Save</a>
       ·
       <a href="#browser">Browser</a>
+    </p>
+
+    <h2 id="prompt-format">Prompt format for Batch</h2>
+    <p>
+      Batch only splits lists it recognizes. If Parse or Start says the structure is wrong, the paste is not
+      in a format the extension can turn into separate scenes. It will not guess. Fix the dividers, then Parse again.
+    </p>
+    <p>Recommended — put this divider on its own line between every scene:</p>
+    <p class="path">===PROMPT===</p>
+    <p>Example:</p>
+    <pre class="path">===PROMPT===
+
+Cinematic 16:9 image. Same 21-year-old student in a dorm room at night, desk lamp, backpack on the chair.
+
+===PROMPT===
+
+Cinematic 16:9 image. Same student walking to class in morning light. Same face, clothing, and backpack.</pre>
+    <p>Also accepted:</p>
+    <ul>
+      <li><code>---PROMPT---</code>, <code>### PROMPT ###</code>, or <code>===SCENE===</code></li>
+      <li>Numbered blocks that start with <code>SCENE 1:</code> then <code>SCENE 2:</code> (a colon after the number)</li>
+    </ul>
+    <p>
+      One image prompt with no divider is fine — that is a 1-scene batch. A numbered list like
+      <code>1. … 2. …</code>, <code>Prompt 1</code>, JSON, or a screenplay without those dividers is not split.
+      The extension does not rewrite your text.
     </p>
 
     <h2 id="batch">Batch queue</h2>
@@ -109,16 +137,16 @@
     </details>
 
     <details>
-      <summary>Parse says “No prompts found”</summary>
+      <summary>Parse says the prompt structure is wrong, or “No prompts found”</summary>
       <div class="faq-body">
-        <p>Separate scenes with a divider. The extension does not rewrite your text.</p>
+        <p>The paste is not in a format Batch can split. See <a href="#prompt-format">Prompt format for Batch</a>.</p>
         <p>Use one of:</p>
         <ul>
           <li><code>===PROMPT===</code> (recommended)</li>
           <li><code>---PROMPT---</code> or <code>### PROMPT ###</code> or <code>===SCENE===</code></li>
           <li>Numbered blocks like <code>SCENE 1:</code> then <code>SCENE 2:</code></li>
         </ul>
-        <p>A single pasted paragraph with no divider is treated as one prompt, not many.</p>
+        <p>A single pasted paragraph with no divider is treated as one prompt, not many. Numbered <code>1. 2. 3.</code> lists and <code>Prompt 1</code> headings are not split.</p>
       </div>
     </details>
 

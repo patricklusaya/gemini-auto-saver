@@ -304,6 +304,11 @@ code {
   color: var(--ink);
 }
 
+pre.path {
+  white-space: pre-wrap;
+  margin: 0 0 16px;
+}
+
 .band-alt .path {
   background: var(--bg);
 }
