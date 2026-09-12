@@ -100,6 +100,9 @@ Copy `.env.example`. Set these in the Vercel project:
 | `POLAR_PRODUCT_ID` | no | Ignore Polar orders for other products |
 | `LEMON_SQUEEZY_PRODUCT_ID` | no | Ignore Lemon Squeezy orders for other products |
 | `REQUIRE_LIVE_ORDERS` | no | Set to `true` to skip Lemon Squeezy test-mode orders |
+| `CLOUDFLARE_ACCOUNT_ID` | for `/admin/analytics` | Cloudflare account id for Analytics Engine SQL |
+| `CLOUDFLARE_API_TOKEN` | for `/admin/analytics` | Token that can query Analytics Engine. Server-side only |
+| `ADMIN_ANALYTICS_PASSWORD` | for `/admin` | Password for the private analytics login |
 
 Do **not** put `private.pem` in this repo or in the extension package.
 

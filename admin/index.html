@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin — Gemini Auto Image Saver</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="../assets/icon128.png" />
+  <link rel="stylesheet" href="../css/styles.css" />
+  <link rel="stylesheet" href="../css/admin.css" />
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap nav">
+      <a class="brand" href="../index.html">
+        <img src="../assets/icon128.png" width="28" height="28" alt="" />
+        Gemini Auto Image Saver
+      </a>
+    </div>
+  </header>
+
+  <main id="main" class="admin-main">
+    <p class="admin-kicker">Private</p>
+    <h1>Analytics login</h1>
+    <p class="admin-lead">Password only. This page is not part of the public site.</p>
+    <p id="loginError" class="admin-error" hidden></p>
+    <form class="admin-form" method="post" action="/api/admin/login" autocomplete="current-password">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" required autofocus />
+      <button class="btn" type="submit">Sign in</button>
+    </form>
+  </main>
+  <script>
+    (function () {
+      var params = new URLSearchParams(location.search);
+      var box = document.getElementById("loginError");
+      if (params.get("error") === "1") {
+        box.hidden = false;
+        box.textContent = "Invalid password";
+      } else if (params.get("error") === "config") {
+        box.hidden = false;
+        box.textContent = "Admin login is not configured.";
+      }
+    })();
+  </script>
+</body>
+</html>
