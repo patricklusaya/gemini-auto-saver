@@ -1,6 +1,20 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/",
+      "has": [{ "type": "host", "value": "links.geminiautosaver.com" }],
+      "destination": "https://gemini-link-tracker.lusayapatrick.workers.dev/",
+      "permanent": false
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "links.geminiautosaver.com" }],
+      "destination": "https://gemini-link-tracker.lusayapatrick.workers.dev/:path*",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     { "source": "/admin/analytics", "destination": "/api/admin/page" }
   ],
