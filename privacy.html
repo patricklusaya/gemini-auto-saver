@@ -129,10 +129,9 @@
       improve the Extension.
     </p>
     <p>
-      After consent, the Extension service worker sends HTTPS POST requests to our telemetry endpoint
-      at <code>gemini-telemetry.lusayapatrick.workers.dev</code>. No analytics API token is stored in
-      the Extension. You can turn this off later in Settings. Events from while it was off are not
-      saved or uploaded later.
+      After consent, the Extension service worker sends HTTPS POST requests to our own telemetry
+      service. No analytics API token is stored in the Extension. You can turn this off later in
+      Settings. Events from while it was off are not saved or uploaded later.
     </p>
 
     <h2>6. Permissions</h2>
@@ -142,7 +141,7 @@
       <li><strong>downloads</strong> — to save image files into your Downloads folder without a remote server.</li>
       <li><strong>scripting</strong> — to run the Batch prompt loop on the open Gemini tab.</li>
       <li><strong>https://gemini.google.com/*</strong> — to detect newly generated images on Gemini, request a local download, and paste the next Batch prompt. The Extension does not run on other websites.</li>
-      <li><strong>https://gemini-telemetry.lusayapatrick.workers.dev/*</strong> — to send optional anonymous Batch usage events after you consent. No request is made if you decline.</li>
+      <li><strong>an additional HTTPS host</strong> — used only to send optional anonymous Batch usage events after you consent. No request is made if you decline.</li>
     </ul>
 
     <h2>7. Third parties</h2>
