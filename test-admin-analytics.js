@@ -11,7 +11,8 @@ const {
   averageSize,
   parseFailureJson,
   aggregateFailures,
-  summarizeUsers
+  summarizeUsers,
+  readTotals
 } = require("./lib/cloudflare-telemetry");
 
 assert.strictEqual(labelFor("yt01"), "Long YouTube Tutorial");
@@ -57,5 +58,15 @@ const users = summarizeUsers([
 ]);
 assert.strictEqual(users.batchUsers, 3);
 assert.strictEqual(users.repeatUsers, 2);
+
+const totals = readTotals([
+  { event: "batch_started", events: 2 },
+  { event: "batch_completed", events: 1, prompt_count: 3, successful: 2, failed: 1, duration_seconds: 40 }
+]);
+assert.strictEqual(totals.batches_started, 2);
+assert.strictEqual(totals.batches_completed, 1);
+assert.strictEqual(totals.prompts_attempted, 3);
+assert.strictEqual(totals.successful, 2);
+assert.strictEqual(totals.failed, 1);
 
 console.log("admin analytics tests passed");
