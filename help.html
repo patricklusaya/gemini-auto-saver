@@ -41,6 +41,8 @@
     <p class="help-toc">
       <a href="#prompt-format">Prompt format</a>
       ·
+      <a href="#name-files-from-timestamps">Timestamps</a>
+      ·
       <a href="#batch">Batch queue</a>
       ·
       <a href="#start">Start and Gemini</a>
@@ -78,6 +80,32 @@ Cinematic 16:9 image. Same student walking to class in morning light. Same face,
       One image prompt with no divider is fine — that is a 1-scene batch. A numbered list like
       <code>1. … 2. …</code>, <code>Prompt 1</code>, JSON, or a screenplay without those dividers is not split.
       The extension does not rewrite your text.
+    </p>
+
+    <h3 id="name-files-from-timestamps">Name files from timestamps</h3>
+    <p>
+      This option is off by default. Turn it on in the Batch tab if you want each saved image named from
+      a timestamp in that scene’s prompt — for example <code>0-14.png</code> from <code>#0-14</code>.
+      Auto Save and the usual <code>scene_001.png</code> names are unchanged while it is off.
+    </p>
+    <p>
+      When it is on, every scene must start with a stamp like <code>#0-00</code> or <code>0-14</code>.
+      Minutes can be any number. Seconds must be 00–59. <code>#0-00</code> and <code>61-05</code> are valid.
+      <code>0-75</code> and <code>#RichardLee</code> are not. The stamp can sit on its own line, or on the
+      same line as the prompt. It is stripped before Gemini sees the text.
+    </p>
+    <p>Example:</p>
+    <pre class="path">#0-00 create image of a quiet camp at night, fire almost out
+
+#0-14 create image of the same hunter walking into pale trees at dawn</pre>
+    <p>
+      You can still use <code>===PROMPT===</code> between scenes, but each part must start with a stamp.
+      The first copy of a stamp gets that filename. A later duplicate keeps the numbered name
+      (<code>scene_002.png</code>), not <code>0-14 (1).png</code>.
+    </p>
+    <p>
+      If Parse says the timestamp format is wrong, the paste has no valid stamps. Use
+      <strong>See structure</strong> in the popup for a sample, then Parse again.
     </p>
 
     <h2 id="batch">Batch queue</h2>
@@ -140,7 +168,8 @@ Cinematic 16:9 image. Same student walking to class in morning light. Same face,
       <summary>Parse says the prompt structure is wrong, or “No prompts found”</summary>
       <div class="faq-body">
         <p>The paste is not in a format Batch can split. See <a href="#prompt-format">Prompt format for Batch</a>.</p>
-        <p>Use one of:</p>
+        <p>If <strong>Name files from timestamps</strong> is on, every scene must start with <code>#0-00</code> or <code>0-14</code>. A normal <code>===PROMPT===</code> list with no stamps will fail. See <a href="#name-files-from-timestamps">Name files from timestamps</a>.</p>
+        <p>When that option is off, use one of:</p>
         <ul>
           <li><code>===PROMPT===</code> or <code>===PROMPT 01===</code> (recommended)</li>
           <li><code>---PROMPT---</code> or <code>### PROMPT ###</code> or <code>===SCENE===</code></li>
