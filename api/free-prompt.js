@@ -40,9 +40,14 @@ module.exports = async function handler(req, res) {
       });
       return;
     }
-    const usage = body && body.consume
+    let usage = body && body.consume
       ? await consumeFreePrompt(user.id)
       : await syncFreePrompts(user.id, body && body.used);
+    if (body && body.used != null) {
+      usage = await syncFreePrompts(user.id, body.used);
+      usage.ok = usage.freePromptsUsed <= usage.freePromptsLimit;
+      usage.upgrade = usage.freePromptsUsed > usage.freePromptsLimit;
+    }
     send(req, res, usage.ok === false ? 403 : 200, {
       ok: usage.ok !== false,
       upgrade: !!usage.upgrade,
