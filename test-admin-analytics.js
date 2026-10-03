@@ -12,7 +12,8 @@ const {
   parseFailureJson,
   aggregateFailures,
   summarizeUsers,
-  readTotals
+  readTotals,
+  parseSizeHistogram
 } = require("./lib/cloudflare-telemetry");
 
 assert.strictEqual(labelFor("yt01"), "Long YouTube Tutorial");
@@ -68,5 +69,17 @@ assert.strictEqual(totals.batches_completed, 1);
 assert.strictEqual(totals.prompts_attempted, 3);
 assert.strictEqual(totals.successful, 2);
 assert.strictEqual(totals.failed, 1);
+
+const sizes = parseSizeHistogram([
+  { prompt_count: 3, batches: 4 },
+  { prompt_count: 8, batches: 2 },
+  { prompt_count: 1, batches: 1 }
+]);
+assert.strictEqual(sizes.total, 7);
+assert.strictEqual(sizes.median, 3);
+assert.strictEqual(sizes.overThree, 2);
+assert.strictEqual(sizes.overThreePercent, 28.6);
+assert.strictEqual(sizes.rows.find(function (row) { return row.key === "3"; }).batches, 4);
+assert.strictEqual(sizes.rows.find(function (row) { return row.key === "7-10"; }).batches, 2);
 
 console.log("admin analytics tests passed");

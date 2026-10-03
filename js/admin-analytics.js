@@ -9,6 +9,8 @@
   var productErrorEl = document.getElementById("productError");
   var productCardsEl = document.getElementById("productCards");
   var trendRowsEl = document.getElementById("trendRows");
+  var sizeRowsEl = document.getElementById("sizeRows");
+  var sizeNoteEl = document.getElementById("sizeNote");
   var failureRowsEl = document.getElementById("failureRows");
   var versionRowsEl = document.getElementById("versionRows");
 
@@ -96,12 +98,37 @@
       if (trendRowsEl) trendRowsEl.innerHTML = emptyRow(5, "Product telemetry is unavailable.");
       if (failureRowsEl) failureRowsEl.innerHTML = emptyRow(3, "Product telemetry is unavailable.");
       if (versionRowsEl) versionRowsEl.innerHTML = emptyRow(2, "Product telemetry is unavailable.");
+      if (sizeRowsEl) sizeRowsEl.innerHTML = emptyRow(3, "Product telemetry is unavailable.");
+      if (sizeNoteEl) {
+        sizeNoteEl.hidden = true;
+        sizeNoteEl.textContent = "";
+      }
       return;
     }
 
     showError(productErrorEl, "");
     productCardsEl.hidden = false;
     productCardsEl.innerHTML = (product.cards || []).map(cardHtml).join("");
+
+    var sizes = product.sizes || {};
+    if (sizeRowsEl) {
+      sizeRowsEl.innerHTML = product.sizesAvailable === false
+        ? emptyRow(3, "Batch size breakdown could not be loaded.")
+        : (sizes.rows && sizes.rows.length)
+          ? sizes.rows.map(function (row) {
+            return "<tr><td>" + escapeHtml(row.label) + "</td><td>" + formatNumber(row.batches) + "</td><td>" + escapeHtml(Number(row.percent).toFixed(1) + "%") + "</td></tr>";
+          }).join("")
+          : emptyRow(3, "No batch starts in this range yet.");
+    }
+    if (sizeNoteEl) {
+      if (product.sizesAvailable === false || !sizes.total) {
+        sizeNoteEl.hidden = true;
+        sizeNoteEl.textContent = "";
+      } else {
+        sizeNoteEl.hidden = false;
+        sizeNoteEl.textContent = "Median queue is " + sizes.median + " prompts. " + Number(sizes.overThreePercent).toFixed(1) + "% of batches are larger than 3. Use that share to set the free-prompt cap.";
+      }
+    }
 
     var trend = product.trend || [];
     trendRowsEl.innerHTML = product.trendAvailable === false
@@ -167,6 +194,7 @@
       if (trendRowsEl) trendRowsEl.innerHTML = emptyRow(5, "No data");
       if (failureRowsEl) failureRowsEl.innerHTML = emptyRow(3, "No data");
       if (versionRowsEl) versionRowsEl.innerHTML = emptyRow(2, "No data");
+      if (sizeRowsEl) sizeRowsEl.innerHTML = emptyRow(3, "No data");
       return;
     }
 

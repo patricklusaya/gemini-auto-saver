@@ -51,10 +51,12 @@ module.exports = async function handler(req, res) {
       failures: data.failures,
       versions: data.versions,
       trend: data.trend,
+      sizes: data.sizes,
       usersAvailable: data.usersAvailable,
       failuresAvailable: data.failuresAvailable,
       versionsAvailable: data.versionsAvailable,
-      trendAvailable: data.trendAvailable
+      trendAvailable: data.trendAvailable,
+      sizesAvailable: data.sizesAvailable
     };
   }).catch(function (error) {
     return {
