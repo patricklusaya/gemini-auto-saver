@@ -1,5 +1,27 @@
 const { getSessionUser, accountForUser } = require("../lib/auth");
+const { findPaidPolarOrder, polarToken } = require("../lib/polar-checkout");
+const { recordPaid } = require("../lib/entitlements");
 const { send, bearerToken, preflight } = require("../lib/http");
+
+async function syncPolarIfNeeded(user, account) {
+  if (account.pro || !polarToken()) return account;
+  try {
+    const paid = await findPaidPolarOrder({
+      email: user.email,
+      googleSub: user.google_sub
+    });
+    if (!paid || !paid.orderId) return account;
+    await recordPaid({
+      orderId: paid.orderId,
+      email: paid.email || user.email,
+      source: paid.source
+    });
+    return accountForUser(user);
+  } catch (error) {
+    console.error("Polar entitlement sync failed:", error && error.message);
+    return account;
+  }
+}
 
 module.exports = async function handler(req, res) {
   if (preflight(req, res)) return;
@@ -20,7 +42,8 @@ module.exports = async function handler(req, res) {
       send(req, res, 401, { ok: false, error: "Session expired. Sign in again." });
       return;
     }
-    const account = await accountForUser(user);
+    let account = await accountForUser(user);
+    account = await syncPolarIfNeeded(user, account);
     send(req, res, 200, {
       ok: true,
       email: account.email,

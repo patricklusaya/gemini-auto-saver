@@ -31,22 +31,42 @@
   </header>
 
   <article class="legal" id="main">
-    <h1>Check the inbox you used at checkout</h1>
-    <p>
-      Checkout has the payment. A separate email from us has the license.
-      Subject line: <strong>Your Gemini Auto Image Saver Pro license</strong>.
-      The key starts with <code>GAS1.</code>
+    <h1 id="thanksTitle">Unlocking Pro…</h1>
+    <p id="thanksBody">
+      Payment is in. The extension should flip to Pro as soon as it checks this account.
+      Go back to the Gemini tab and keep the side panel open.
     </p>
-    <ol>
-      <li>Open that mail (spam too). It can take a minute.</li>
-      <li>Extension popup → Settings → paste the key → Activate license.</li>
-    </ol>
     <p>
       Auto Save stays free. Pro only removes the 3-prompt Batch cap.
-      No mail? See <a href="help.html">Help</a> and include the checkout address if you write in.
+      If the panel still says Free, close Polar and click the extension again.
     </p>
-    <p><a class="btn" href="index.html#install">Install</a></p>
+    <p><a class="btn" href="index.html#install">Open the site</a></p>
   </article>
+  <script>
+    (function () {
+      var title = document.getElementById("thanksTitle");
+      var body = document.getElementById("thanksBody");
+      var id = new URLSearchParams(window.location.search).get("checkout_id") || "";
+      if (!id) {
+        if (title) title.textContent = "Payment received";
+        return;
+      }
+      fetch("/api/checkout/confirm?checkout_id=" + encodeURIComponent(id))
+        .then(function (response) { return response.json().catch(function () { return {}; }); })
+        .then(function (payload) {
+          if (payload && payload.paid) {
+            if (title) title.textContent = "Pro is unlocked";
+            if (body) body.textContent = "Go back to Gemini. The side panel should show Pro on this Google account.";
+            return;
+          }
+          if (title) title.textContent = "Payment is processing";
+          if (body) body.textContent = "Polar has the charge. Keep the extension open — it will pick up Pro in a few seconds.";
+        })
+        .catch(function () {
+          if (title) title.textContent = "Payment received";
+        });
+    })();
+  </script>
 
   <footer class="footer">
     <div class="wrap footer-row">

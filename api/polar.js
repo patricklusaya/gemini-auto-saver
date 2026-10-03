@@ -54,15 +54,18 @@ module.exports = async function handler(req, res) {
   }
 
   const eventName = payload && payload.type;
-  if (eventName !== "order.paid") {
+  const paidEvent = eventName === "order.paid"
+    || (eventName === "order.updated" && payload.data && payload.data.paid === true)
+    || (eventName === "checkout.updated" && ["succeeded", "confirmed"].indexOf(String((payload.data && payload.data.status) || "").toLowerCase()) !== -1);
+  if (!paidEvent) {
     json(res, 200, { ok: true, ignored: true, event: eventName || null });
     return;
   }
 
   const data = payload.data || {};
   const customer = data.customer || {};
-  const orderId = data.id || data.number;
-  const email = String(customer.email || data.email || "").trim();
+  const orderId = data.order_id || data.id || data.number;
+  const email = String(customer.email || data.customer_email || data.email || "").trim();
   const status = String(data.status || "").toLowerCase();
   const reason = String(data.billing_reason || "purchase");
   const productId = data.product_id != null
@@ -82,7 +85,11 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  if (status && status !== "paid") {
+  const paidStatus = data.paid === true
+    || status === "paid"
+    || status === "succeeded"
+    || status === "confirmed";
+  if (status && !paidStatus) {
     json(res, 200, { ok: true, skipped: "not_paid", status });
     return;
   }
