@@ -42,7 +42,10 @@ module.exports = async function handler(req, res) {
       email: account.email,
       googleSub: account.googleSub,
       pro: account.pro,
-      licenseKey: account.licenseKey
+      licenseKey: account.licenseKey,
+      freePromptsUsed: account.freePromptsUsed,
+      freePromptsLimit: account.freePromptsLimit,
+      freePromptsRemaining: account.freePromptsRemaining
     });
   } catch (error) {
     console.error("Google sign-in failed:", error && error.message);
