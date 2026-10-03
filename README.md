@@ -2,7 +2,7 @@
 
 Public landing page, privacy policy, and Pro checkout webhook for [Gemini Auto Image Saver](https://github.com/patricklusaya/gemini-auto-saver).
 
-The marketing pages are static. Server routes under `api/` receive checkout webhooks (Lemon Squeezy and Polar), sign a `GAS1` license, and email it. The browser extension never calls these APIs.
+The marketing pages are static. Server routes under `api/` receive checkout webhooks (Lemon Squeezy and Polar), sign a `GAS1` license, email it, and — when `DATABASE_URL` is set — store Pro on our side. Polar is checkout only. Google sign-in is off until you flip the flags.
 
 ```text
 .
@@ -103,8 +103,23 @@ Copy `.env.example`. Set these in the Vercel project:
 | `CLOUDFLARE_ACCOUNT_ID` | for `/admin/analytics` | Cloudflare account id for Analytics Engine SQL |
 | `CLOUDFLARE_API_TOKEN` | for `/admin/analytics` | Token that can query Analytics Engine. Server-side only |
 | `ADMIN_ANALYTICS_PASSWORD` | for `/admin` | Password for the private analytics login |
+| `DATABASE_URL` | for Google / owned Pro | Neon (or any Postgres) URL. Webhooks write entitlements here. Runtime `/api/me` does not call Polar |
+| `GOOGLE_CLIENT_ID` | for Google sign-in | Web OAuth client ID. Also paste into `js/site-config.js` |
 
 Do **not** put `private.pem` in this repo or in the extension package.
+
+## Google sign-in (off by default)
+
+Polar/Lemon take the payment. **Our database** is who is Pro. If Polar is down after someone paid, they still sign in and the extension still verifies the local `GAS1` key. If Polar is down at checkout, use Lemon Squeezy (`defaultMor` / the other checkout URL).
+
+Sign-in happens **inside the extension** (`chrome.identity`), not on the website.
+
+1. Google Cloud OAuth client type: **Chrome extension**. Item ID must be this install: unpacked ID from `chrome://extensions`, or the store ID `cchaijnmiipafncpnhenlkifhljmehha` for the CWS build.
+2. Set `GOOGLE_CLIENT_ID` and `DATABASE_URL` in Vercel. Deploy the site so `/api/auth/google` exists.
+3. Extension `GOOGLE_AUTH_ENABLED` is the on/off switch. Manifest `oauth2.client_id` must match.
+4. Update the Chrome Web Store privacy disclosure before you ship a build with Google on.
+
+Checkout must use the same Google email Chrome signed in with. Paste-key remains as a fallback.
 
 ### Polar dashboard
 

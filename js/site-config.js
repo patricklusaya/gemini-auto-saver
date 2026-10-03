@@ -1,5 +1,7 @@
 window.GAS_SITE = {
   defaultMor: "polar",
+  googleAuthEnabled: false,
+  googleClientId: "",
   mors: {
     polar: {
       checkoutUrl: "https://polar.sh/checkout/polar_c_mqbq7DfkRoIqHnaUr0azPDUU0aEmJPAWDtgU146XF28"

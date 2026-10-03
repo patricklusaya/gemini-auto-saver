@@ -1,0 +1,7 @@
+{
+  "name": "gemini-auto-saver-site",
+  "private": true,
+  "dependencies": {
+    "@neondatabase/serverless": "^1.0.1"
+  }
+}

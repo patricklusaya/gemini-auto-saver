@@ -2,6 +2,7 @@
 Thumbs.db
 .vercel
 .env
+node_modules/
 .env.local
 .env*.local
 *.pem
